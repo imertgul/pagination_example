@@ -46,35 +46,38 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 75,
-              child: Row(
-                children: [
-                  Expanded(child: _queryInput),
-                  IconButton(
-                      onPressed: () {
-                        getSearchResults();
-                      },
-                      icon: const Icon(Icons.search))
-                ],
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 75,
+                child: Row(
+                  children: [
+                    Expanded(child: _queryInput),
+                    IconButton(
+                        onPressed: () {
+                          getSearchResults();
+                        },
+                        icon: const Icon(Icons.search))
+                  ],
+                ),
               ),
-            ),
-            searchResult == null
-                ? const Center(child: CircularProgressIndicator())
-                : Expanded(
-                    child: GridView(
-                      gridDelegate:
-                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                              maxCrossAxisExtent: 300, childAspectRatio: 0.8),
-                      children: [
-                        ...searchResult!.results
-                            .map((e) => MovieResultWidget(movie: e))
-                      ],
-                    ),
-                  )
-          ],
+              searchResult == null
+                  ? const Center(child: Text('Type something to search'))
+                  : Expanded(
+                      child: GridView(
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 300, childAspectRatio: 0.8),
+                        children: [
+                          ...searchResult!.results
+                              .map((e) => MovieResultWidget(movie: e))
+                        ],
+                      ),
+                    )
+            ],
+          ),
         ),
       ),
     );

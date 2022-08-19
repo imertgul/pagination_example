@@ -20,24 +20,28 @@ class MovieResultWidget extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   decoration:
-                    BoxDecoration(color: Colors.white, border: Border.all()),
+                      BoxDecoration(color: Colors.white, border: Border.all()),
                   child: movie.posterPath != null
                       ? Image.network(
-                        fit: BoxFit.fitWidth,
+                          fit: BoxFit.fitWidth,
                           'https://image.tmdb.org/t/p/w500/${movie.posterPath}')
                       : const Center(child: Text('Resim Bulunamadi')),
                 ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white, border: Border.all()),
-                      child: Text(movie.voteAverage.toString()),
+                if (movie.voteAverage != null)
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white, border: Border.all()),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Text(movie.voteAverage.toString()),
+                        ),
+                      ),
                     ),
-                  ),
-                )
+                  )
               ],
             )),
             Align(
