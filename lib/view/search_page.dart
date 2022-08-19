@@ -1,5 +1,6 @@
 import 'package:dh_case/repository/movie_repository.dart';
-import 'package:dh_case/util/showDialog.dart';
+import 'package:dh_case/util/show_alert_dialog.dart';
+import 'package:dh_case/view/widgets/movie_result_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../model/search_response.dart';
@@ -44,31 +45,37 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            height: 100,
-            child: Row(
-              children: [
-                Expanded(child: _queryInput),
-                IconButton(
-                    onPressed: () {
-                      getSearchResults();
-                    },
-                    icon: const Icon(Icons.search))
-              ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 75,
+              child: Row(
+                children: [
+                  Expanded(child: _queryInput),
+                  IconButton(
+                      onPressed: () {
+                        getSearchResults();
+                      },
+                      icon: const Icon(Icons.search))
+                ],
+              ),
             ),
-          ),
-          searchResult == null
-              ? const Center(child: CircularProgressIndicator())
-              : Expanded(
-                  child: ListView(
-                    children: [
-                      ...searchResult!.results.map((e) => Text(e.toString()))
-                    ],
-                  ),
-                )
-        ],
+            searchResult == null
+                ? const Center(child: CircularProgressIndicator())
+                : Expanded(
+                    child: GridView(
+                      gridDelegate:
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 300, childAspectRatio: 0.8),
+                      children: [
+                        ...searchResult!.results
+                            .map((e) => MovieResultWidget(movie: e))
+                      ],
+                    ),
+                  )
+          ],
+        ),
       ),
     );
   }
