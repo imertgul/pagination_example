@@ -49,7 +49,7 @@ class _SearchPageState extends State<SearchPage> {
         child: Column(
           children: [
             SizedBox(
-              height: 175,
+              height: 75,
               child: Row(
                 children: [
                   Expanded(child: _queryInput),
@@ -64,8 +64,10 @@ class _SearchPageState extends State<SearchPage> {
             searchResult == null
                 ? const Center(child: CircularProgressIndicator())
                 : Expanded(
-                    child: GridView.count(
-                      crossAxisCount: 2,
+                    child: GridView(
+                      gridDelegate:
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 300, childAspectRatio: 0.8),
                       children: [
                         ...searchResult!.results
                             .map((e) => MovieResultWidget(movie: e))
