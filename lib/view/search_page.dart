@@ -35,11 +35,11 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
-    // _queryInput.controller!.addListener(() {
-    //   if (_queryInput.controller!.text.length > 2) {
-    //     getSearchResults();
-    //   }
-    // });
+    _queryInput.controller!.addListener(() {
+      if (_queryInput.controller!.text.length > 2) {
+        getSearchResults();
+      }
+    });
   }
 
   @override
