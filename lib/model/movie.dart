@@ -191,7 +191,7 @@ class Movie {
   String originalTitle;
   String overview;
   double popularity;
-  String posterPath;
+  String? posterPath;
   List<MovieProductionCompanies>? productionCompanies;
   List<MovieProductionCountries>? productionCountries;
   String releaseDate;
@@ -202,7 +202,7 @@ class Movie {
   String tagline;
   String title;
   bool video;
-  double voteAverage;
+  double? voteAverage;
   int voteCount;
 
   Movie({
@@ -248,7 +248,7 @@ class Movie {
         originalTitle: json['original_title'].toString(),
         overview: json['overview'].toString(),
         popularity: json['popularity'].toDouble(),
-        posterPath: json['poster_path'].toString(),
+        posterPath: json['poster_path']?.toString(),
         productionCompanies: (json['production_companies'] as List<dynamic>?)
             ?.map((e) => MovieProductionCompanies.fromJson(e))
             .toList(),
@@ -266,7 +266,7 @@ class Movie {
         tagline: json['tagline'].toString(),
         title: json['title'].toString(),
         video: json['video'],
-        voteAverage: json['vote_average'].toDouble(),
+        voteAverage: json['vote_average']?.toDouble(),
         voteCount: json['vote_count'].toInt());
   }
   Map<String, dynamic> toJson() {
