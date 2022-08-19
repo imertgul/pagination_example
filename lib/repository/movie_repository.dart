@@ -8,7 +8,7 @@ class MovieRepository extends Mert {
   MovieRepository({this.apiKey = '35ef0461fc4557cf1d256d3335ed7545'})
       : super(base: 'api.themoviedb.org');
 
-  Future<Movie> getMovieDetail(String movieId) async {
+  Future<Movie> getMovieDetail(int movieId) async {
     final resp =
         await request(RequestType.GET, '/3/movie/$movieId', queryParameters: {
       'api_key': apiKey,
