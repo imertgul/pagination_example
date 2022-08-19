@@ -37,7 +37,6 @@ class MovieResult {
   int voteCount;
   bool video;
   double voteAverage;
-  Map<String, dynamic> __origJson = {};
 
   MovieResult({
     required this.posterPath,
@@ -98,8 +97,6 @@ class MovieResult {
     data['vote_average'] = voteAverage;
     return data;
   }
-
-  Map<String, dynamic> origJson() => __origJson;
 }
 
 class SearchResponse {
@@ -135,7 +132,6 @@ class SearchResponse {
   List<MovieResult> results;
   int totalResults;
   int totalPages;
-  Map<String, dynamic> __origJson = {};
 
   SearchResponse({
     required this.page,
@@ -167,6 +163,4 @@ class SearchResponse {
     data['total_pages'] = totalPages;
     return data;
   }
-
-  Map<String, dynamic> origJson() => __origJson;
 }
