@@ -57,10 +57,67 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                           opacity: 0.1,
                           image: NetworkImage(
                               'https://image.tmdb.org/t/p/w500/${movie.backdropPath}'))),
-              child: Expanded(
-                child: Text(movie.title),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: _buildPosterImage(),
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(movie.overview),
+                          Text(movie.genres.map((e) => e.name).toString()),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
+    );
+  }
+
+  Container _buildPosterImage() {
+    return Container(
+      height: 260,
+      decoration: BoxDecoration(
+        border: Border.all(),
+      ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          movie.posterPath != null
+              ? Image.network(
+                  fit: BoxFit.fitWidth,
+                  'https://image.tmdb.org/t/p/w500/${movie.posterPath}')
+              : const Center(child: Text('No image')),
+          if (movie.voteAverage != null)
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  decoration:
+                      BoxDecoration(color: Colors.white, border: Border.all()),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(movie.voteAverage.toString()),
+                  ),
+                ),
+              ),
+            )
+        ],
+      ),
     );
   }
 }
