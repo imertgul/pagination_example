@@ -27,7 +27,7 @@ class MovieResult {
   bool adult;
   String overview;
   String releaseDate;
-  List<int> genreIds;
+  List<dynamic> genreIds;
   int id;
   String originalTitle;
   String originalLanguage;
