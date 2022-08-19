@@ -180,7 +180,7 @@ class Movie {
 */
 
   bool adult;
-  String backdropPath;
+  String? backdropPath;
   String belongsToCollection;
   int budget;
   List<MovieGenres> genres;
@@ -191,18 +191,18 @@ class Movie {
   String originalTitle;
   String overview;
   double popularity;
-  String posterPath;
-  List<MovieProductionCompanies> productionCompanies;
-  List<MovieProductionCountries> productionCountries;
+  String? posterPath;
+  List<MovieProductionCompanies>? productionCompanies;
+  List<MovieProductionCountries>? productionCountries;
   String releaseDate;
   int revenue;
   int runtime;
-  List<MovieSpokenLanguages> spokenLanguages;
+  List<MovieSpokenLanguages>? spokenLanguages;
   String status;
   String tagline;
   String title;
   bool video;
-  double voteAverage;
+  double? voteAverage;
   int voteCount;
 
   Movie({
@@ -235,7 +235,7 @@ class Movie {
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
         adult: json['adult'],
-        backdropPath: json['backdrop_path'].toString(),
+        backdropPath: json['backdrop_path']?.toString(),
         belongsToCollection: json['belongs_to_collection'].toString(),
         budget: json['budget'].toInt(),
         genres: (json['genres'] as List<dynamic>)
@@ -248,25 +248,25 @@ class Movie {
         originalTitle: json['original_title'].toString(),
         overview: json['overview'].toString(),
         popularity: json['popularity'].toDouble(),
-        posterPath: json['poster_path'].toString(),
-        productionCompanies: (json['production_companies'] as List<dynamic>)
-            .map((e) => MovieProductionCompanies.fromJson(e))
+        posterPath: json['poster_path']?.toString(),
+        productionCompanies: (json['production_companies'] as List<dynamic>?)
+            ?.map((e) => MovieProductionCompanies.fromJson(e))
             .toList(),
         productionCountries:
-            (json['productproduction_countriesion_companies'] as List<dynamic>)
-                .map((e) => MovieProductionCountries.fromJson(e))
+            (json['productproduction_countriesion_companies'] as List<dynamic>?)
+                ?.map((e) => MovieProductionCountries.fromJson(e))
                 .toList(),
         releaseDate: json['release_date'].toString(),
         revenue: json['revenue'].toInt(),
         runtime: json['runtime'].toInt(),
-        spokenLanguages: (json['spoken_languages'] as List<dynamic>)
-            .map((e) => MovieSpokenLanguages.fromJson(e))
+        spokenLanguages: (json['spoken_languages'] as List<dynamic>?)
+            ?.map((e) => MovieSpokenLanguages.fromJson(e))
             .toList(),
         status: json['status'].toString(),
         tagline: json['tagline'].toString(),
         title: json['title'].toString(),
         video: json['video'],
-        voteAverage: json['vote_average'].toDouble(),
+        voteAverage: json['vote_average']?.toDouble(),
         voteCount: json['vote_count'].toInt());
   }
   Map<String, dynamic> toJson() {
@@ -294,7 +294,7 @@ class Movie {
     if (productionCompanies != null) {
       final v = productionCompanies;
       final arr0 = [];
-      for (var v in v) {
+      for (var v in v!) {
         arr0.add(v.toJson());
       }
       data['production_companies'] = arr0;
@@ -302,7 +302,7 @@ class Movie {
     if (productionCountries != null) {
       final v = productionCountries;
       final arr0 = [];
-      for (var v in v) {
+      for (var v in v!) {
         arr0.add(v.toJson());
       }
       data['production_countries'] = arr0;
@@ -313,7 +313,7 @@ class Movie {
     if (spokenLanguages != null) {
       final v = spokenLanguages;
       final arr0 = [];
-      for (var v in v) {
+      for (var v in v!) {
         arr0.add(v.toJson());
       }
       data['spoken_languages'] = arr0;
