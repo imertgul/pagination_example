@@ -36,7 +36,7 @@ class MovieResult {
   double popularity;
   int voteCount;
   bool video;
-  double voteAverage;
+  double? voteAverage;
 
   MovieResult({
     required this.posterPath,
@@ -70,7 +70,7 @@ class MovieResult {
         popularity: json['popularity'].toDouble(),
         voteCount: json['vote_count'].toInt(),
         video: json['video'],
-        voteAverage: json['vote_average'].toDouble());
+        voteAverage: json['vote_average']?.toDouble());
   }
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
