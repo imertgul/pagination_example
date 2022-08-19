@@ -16,28 +16,31 @@ class _SearchPageState extends State<SearchPage> {
   final repo = MovieRepository();
   final _queryInput = TextField(
     controller: TextEditingController(),
+    scrollController: ScrollController(),
   );
   SearchResponse? searchResult;
   List<MovieResult>? results;
 
-  getSearchResults() async {
+  Future<void> getSearchResults() async {
     try {
       final resp = await repo.searchMovie(_queryInput.controller!.text);
       if (mounted) {
+        await _scrollToTop();
         setState(() {
           searchResult = resp;
           results = List.from(searchResult!.results);
         });
-        print('helllo new datas');
       }
     } on Exception catch (e) {
-      showAlertDialog(context, e.toString(), 'Err');
+      showAlertDialog(context, e.toString(), 'Error');
     }
   }
 
-  getMoreSearchResults() async {
+  Future<void> getMoreSearchResults() async {
     try {
-      if (searchResult == null) throw Exception('page is empty');
+      if (searchResult == null && results == null) {
+        throw Exception('page is empty');
+      }
       final resp = await repo.searchMovie(_queryInput.controller!.text,
           page: searchResult!.page + 1);
       if (mounted) {
@@ -45,12 +48,17 @@ class _SearchPageState extends State<SearchPage> {
           searchResult = resp;
           results!.addAll(searchResult!.results);
         });
-        _queryInput.scrollController!.animateTo(0,
-            duration: const Duration(milliseconds: 50), curve: Curves.linear);
       }
     } on Exception catch (e) {
       showAlertDialog(context, e.toString(), 'Error');
     }
+  }
+
+  Future<void> _scrollToTop() {
+    return _queryInput.scrollController!.animateTo(
+        _queryInput.scrollController!.position.minScrollExtent,
+        duration: const Duration(milliseconds: 100),
+        curve: Curves.linear);
   }
 
   @override
