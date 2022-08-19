@@ -18,7 +18,6 @@ class MovieResultWidget extends StatelessWidget {
                   builder: (context) => MovieDetailPage(movieResult: movie)));
         },
         child: SizedBox(
-          // height: 700,
           width: 250,
           child: Column(
             children: [
@@ -27,13 +26,12 @@ class MovieResultWidget extends StatelessWidget {
                 children: [
                   Container(
                     width: double.infinity,
-                    decoration: BoxDecoration(
-                        color: Colors.white, border: Border.all()),
+                    decoration: BoxDecoration(border: Border.all()),
                     child: movie.posterPath != null
                         ? Image.network(
                             fit: BoxFit.fitWidth,
                             'https://image.tmdb.org/t/p/w500/${movie.posterPath}')
-                        : const Center(child: Text('Resim Bulunamadi')),
+                        : const Center(child: Text('No image')),
                   ),
                   if (movie.voteAverage != null)
                     Align(
