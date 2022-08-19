@@ -23,7 +23,7 @@ class MovieResult {
 } 
 */
 
-  String posterPath;
+  String? posterPath;
   bool adult;
   String overview;
   String releaseDate;
@@ -57,7 +57,7 @@ class MovieResult {
 
   factory MovieResult.fromJson(Map<String, dynamic> json) {
     return MovieResult(
-        posterPath: json['poster_path'].toString(),
+        posterPath: json['poster_path']?.toString(),
         adult: json['adult'],
         overview: json['overview'].toString(),
         releaseDate: json['release_date'].toString(),
