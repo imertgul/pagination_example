@@ -7,12 +7,51 @@ class MovieResultWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              image: NetworkImage(
-                  'https://image.tmdb.org/t/p/w500/${movie.posterPath ?? movie.backdropPath}'))),
-      child: Text(movie.title),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+        // height: 700,
+        width: 250,
+        child: Column(
+          children: [
+            Expanded(
+                child: Stack(
+              children: [
+                Container(
+                  width: double.infinity,
+                  decoration:
+                    BoxDecoration(color: Colors.white, border: Border.all()),
+                  child: movie.posterPath != null
+                      ? Image.network(
+                        fit: BoxFit.fitWidth,
+                          'https://image.tmdb.org/t/p/w500/${movie.posterPath}')
+                      : const Center(child: Text('Resim Bulunamadi')),
+                ),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white, border: Border.all()),
+                      child: Text(movie.voteAverage.toString()),
+                    ),
+                  ),
+                )
+              ],
+            )),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Container(
+                width: double.infinity,
+                decoration:
+                    BoxDecoration(color: Colors.white, border: Border.all()),
+                child: Text(movie.title),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
