@@ -42,34 +42,32 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
       appBar: AppBar(
         title: Text(widget.movieResult.title),
       ),
-      body: isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : Container(
-              width: double.infinity,
-              height: double.infinity,
-              decoration: BoxDecoration(
-                  image: movie.backdropPath == null
-                      ? null
-                      : DecorationImage(
-                          fit: BoxFit.fitHeight,
-                          opacity: 0.1,
-                          image: NetworkImage(
-                              'https://image.tmdb.org/t/p/w500/${movie.backdropPath}'))),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: _buildPosterImage(),
-                    ),
-                  ),
-                  SizedBox(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+            image: isLoading || movie.backdropPath == null
+                ? null
+                : DecorationImage(
+                    fit: BoxFit.fitHeight,
+                    opacity: 0.1,
+                    image: NetworkImage(
+                        'https://image.tmdb.org/t/p/w500/${movie.backdropPath}'))),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width / 2,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: _buildPosterImage(),
+              ),
+            ),
+            isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : SizedBox(
                     width: MediaQuery.of(context).size.width / 2,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -81,9 +79,9 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -96,12 +94,12 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          movie.posterPath != null
+          widget.movieResult.posterPath != null
               ? Image.network(
                   fit: BoxFit.fitWidth,
-                  'https://image.tmdb.org/t/p/w500/${movie.posterPath}')
+                  'https://image.tmdb.org/t/p/w500/${widget.movieResult.posterPath}')
               : const Center(child: Text('No image')),
-          if (movie.voteAverage != null)
+          if (widget.movieResult.voteAverage != null)
             Align(
               alignment: Alignment.bottomLeft,
               child: Padding(
@@ -111,7 +109,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                       BoxDecoration(color: Colors.white, border: Border.all()),
                   child: Padding(
                     padding: const EdgeInsets.all(4.0),
-                    child: Text(movie.voteAverage.toString()),
+                    child: Text(widget.movieResult.voteAverage.toString()),
                   ),
                 ),
               ),
