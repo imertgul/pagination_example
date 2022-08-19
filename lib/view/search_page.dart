@@ -18,6 +18,7 @@ class _SearchPageState extends State<SearchPage> {
     controller: TextEditingController(),
   );
   SearchResponse? searchResult;
+  List<MovieResult>? results;
 
   getSearchResults() async {
     try {
@@ -25,10 +26,30 @@ class _SearchPageState extends State<SearchPage> {
       if (mounted) {
         setState(() {
           searchResult = resp;
+          results = List.from(searchResult!.results);
         });
+        print('helllo new datas');
       }
     } on Exception catch (e) {
       showAlertDialog(context, e.toString(), 'Err');
+    }
+  }
+
+  getMoreSearchResults() async {
+    try {
+      if (searchResult == null) throw Exception('page is empty');
+      final resp = await repo.searchMovie(_queryInput.controller!.text,
+          page: searchResult!.page + 1);
+      if (mounted) {
+        setState(() {
+          searchResult = resp;
+          results!.addAll(searchResult!.results);
+        });
+        _queryInput.scrollController!.animateTo(0,
+            duration: const Duration(milliseconds: 50), curve: Curves.linear);
+      }
+    } on Exception catch (e) {
+      showAlertDialog(context, e.toString(), 'Error');
     }
   }
 
@@ -63,23 +84,45 @@ class _SearchPageState extends State<SearchPage> {
                   ],
                 ),
               ),
-              searchResult == null
-                  ? const Center(child: Text('Type something to search'))
+              results == null
+                  ? _buildLabel('Type something to search')
                   : Expanded(
-                      child: GridView(
-                        gridDelegate:
-                            const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 300, childAspectRatio: 0.8),
-                        children: [
-                          ...searchResult!.results
-                              .map((e) => MovieResultWidget(movie: e))
-                        ],
-                      ),
-                    )
+                      child: searchResult!.totalPages == 0
+                          ? _buildLabel('No result')
+                          : GridView.builder(
+                              itemCount: results!.length + 1,
+                              gridDelegate:
+                                  const SliverGridDelegateWithMaxCrossAxisExtent(
+                                      maxCrossAxisExtent: 300,
+                                      childAspectRatio: 0.8),
+                              itemBuilder: (BuildContext context, int index) {
+                                if (index == results!.length) {
+                                  if (searchResult!.totalPages ==
+                                      searchResult!.page) {
+                                    return _buildLabel('End of Page');
+                                  } else {
+                                    getMoreSearchResults();
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                } else {
+                                  return MovieResultWidget(
+                                      key: Key('Movie$index'),
+                                      movie: results![index]);
+                                }
+                              },
+                            ),
+                    ),
+              if (searchResult != null)
+                _buildLabel(
+                    'Page: ${searchResult!.page}, Total page: ${searchResult!.totalPages}, ${results!.length} loaded')
             ],
           ),
         ),
       ),
     );
   }
+
+  Center _buildLabel(String label) => Center(child: Text(label));
 }
