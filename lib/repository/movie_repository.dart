@@ -13,7 +13,6 @@ class MovieRepository extends Mert {
         await request(RequestType.GET, '/3/movie/$movieId', queryParameters: {
       'api_key': apiKey,
     });
-    print(resp);
     return Movie.fromJson(resp.decodeMap());
   }
 
@@ -21,13 +20,10 @@ class MovieRepository extends Mert {
     Map<String, dynamic> queries = {
       'api_key': apiKey,
       'query': query,
+      if (page != null) 'page': page.toString()
     };
-    if (page != null) {
-      queries.addAll({'page': page});
-    }
     final resp = await request(RequestType.GET, '/3/search/movie',
         queryParameters: queries);
-    print(resp.decodeMap());
     return SearchResponse.fromJson(resp.decodeMap());
   }
 }

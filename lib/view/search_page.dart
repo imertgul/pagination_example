@@ -16,20 +16,49 @@ class _SearchPageState extends State<SearchPage> {
   final repo = MovieRepository();
   final _queryInput = TextField(
     controller: TextEditingController(),
+    scrollController: ScrollController(),
   );
   SearchResponse? searchResult;
+  List<MovieResult>? results;
 
-  getSearchResults() async {
+  Future<void> getSearchResults() async {
     try {
       final resp = await repo.searchMovie(_queryInput.controller!.text);
       if (mounted) {
+        await _scrollToTop();
         setState(() {
           searchResult = resp;
+          results = List.from(searchResult!.results);
         });
       }
     } on Exception catch (e) {
-      showAlertDialog(context, e.toString(), 'Err');
+      showAlertDialog(context, e.toString(), 'Error');
     }
+  }
+
+  Future<void> getMoreSearchResults() async {
+    try {
+      if (searchResult == null && results == null) {
+        throw Exception('page is empty');
+      }
+      final resp = await repo.searchMovie(_queryInput.controller!.text,
+          page: searchResult!.page + 1);
+      if (mounted) {
+        setState(() {
+          searchResult = resp;
+          results!.addAll(searchResult!.results);
+        });
+      }
+    } on Exception catch (e) {
+      showAlertDialog(context, e.toString(), 'Error');
+    }
+  }
+
+  Future<void> _scrollToTop() {
+    return _queryInput.scrollController!.animateTo(
+        _queryInput.scrollController!.position.minScrollExtent,
+        duration: const Duration(milliseconds: 100),
+        curve: Curves.linear);
   }
 
   @override
@@ -63,23 +92,45 @@ class _SearchPageState extends State<SearchPage> {
                   ],
                 ),
               ),
-              searchResult == null
-                  ? const Center(child: Text('Type something to search'))
+              results == null
+                  ? _buildLabel('Type something to search')
                   : Expanded(
-                      child: GridView(
-                        gridDelegate:
-                            const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 300, childAspectRatio: 0.8),
-                        children: [
-                          ...searchResult!.results
-                              .map((e) => MovieResultWidget(movie: e))
-                        ],
-                      ),
-                    )
+                      child: searchResult!.totalPages == 0
+                          ? _buildLabel('No result')
+                          : GridView.builder(
+                              itemCount: results!.length + 1,
+                              gridDelegate:
+                                  const SliverGridDelegateWithMaxCrossAxisExtent(
+                                      maxCrossAxisExtent: 300,
+                                      childAspectRatio: 0.8),
+                              itemBuilder: (BuildContext context, int index) {
+                                if (index == results!.length) {
+                                  if (searchResult!.totalPages ==
+                                      searchResult!.page) {
+                                    return _buildLabel('End of Page');
+                                  } else {
+                                    getMoreSearchResults();
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                } else {
+                                  return MovieResultWidget(
+                                      key: Key('Movie$index'),
+                                      movie: results![index]);
+                                }
+                              },
+                            ),
+                    ),
+              if (searchResult != null)
+                _buildLabel(
+                    'Page: ${searchResult!.page}, Total page: ${searchResult!.totalPages}, ${results!.length} loaded')
             ],
           ),
         ),
       ),
     );
   }
+
+  Center _buildLabel(String label) => Center(child: Text(label));
 }
