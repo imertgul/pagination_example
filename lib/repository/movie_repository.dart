@@ -3,6 +3,11 @@ import 'package:dh_case/model/search_response.dart';
 import 'package:mert/decoder_extensions.dart';
 import 'package:mert/request_helper.dart';
 
+//'Mert' package helps me about request and decode the responce. This package created by me.
+//You can visit by https://pub.dev/packages/mert 
+
+// Models are genereted from json
+
 class MovieRepository extends Mert {
   final String apiKey;
   MovieRepository({this.apiKey = '35ef0461fc4557cf1d256d3335ed7545'})

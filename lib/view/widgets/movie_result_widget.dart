@@ -12,6 +12,7 @@ class MovieResultWidget extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
         onTap: () {
+          //Push detail page to navigator.
           Navigator.push(
               context,
               MaterialPageRoute(
