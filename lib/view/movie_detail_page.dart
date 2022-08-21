@@ -21,19 +21,8 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   @override
   void initState() {
     super.initState();
+    //get movie details as wanted
     getMovieDetail();
-  }
-
-  getMovieDetail() async {
-    try {
-      final resp = await repo.getMovieDetail(widget.movieResult.id);
-      setState(() {
-        movie = resp;
-        isLoading = false;
-      });
-    } on Exception catch (e) {
-      showAlertDialog(context, e.toString(), 'Error');
-    }
   }
 
   @override
@@ -117,5 +106,18 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
         ],
       ),
     );
+  }
+
+  
+  getMovieDetail() async {
+    try {
+      final resp = await repo.getMovieDetail(widget.movieResult.id);
+      setState(() {
+        movie = resp;
+        isLoading = false;
+      });
+    } on Exception catch (e) {
+      showAlertDialog(context, e.toString(), 'Error');
+    }
   }
 }
