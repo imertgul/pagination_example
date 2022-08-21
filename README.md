@@ -8,3 +8,5 @@ results and show movie details using TheMovieDb API.
  - Models are genereted from json with online tool
 - 'mert' package for request and decode easily
 
+
+Live demo : https://dh-case-mert.web.app
