@@ -1,4 +1,4 @@
-# dh_case
+# Pagination example
 
 The goal of this assignment is to implement a sample project, where you list movie search
 results and show movie details using TheMovieDb API.
